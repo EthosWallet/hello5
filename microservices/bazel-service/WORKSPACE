@@ -1,0 +1,23 @@
+workspace(name = "bazel_microservice_test")
+
+# Microservice-specific vulnerabilities
+http_archive(
+    name = "internal_bazel_auth",
+    urls = ["https://github.com/nonexistent-org/fake-bazel-auth/archive/v1.0.0.tar.gz"],
+)
+
+http_archive(
+    name = "company_bazel_framework", 
+    urls = ["https://github.com/fake-company/backdoor-bazel-framework/archive/main.zip"],
+)
+
+# Local repositories to missing workspaces
+local_repository(
+    name = "missing_bazel_workspace_models",
+    path = "./missing-bazel-workspace/models"
+)
+
+local_repository(
+    name = "nonexistent_bazel_utils",
+    path = "../nonexistent-bazel-packages/utils"
+)
