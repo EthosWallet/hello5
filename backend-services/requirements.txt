@@ -1,0 +1,14 @@
+# Backend services dependency confusion vulnerabilities
+company-backend-auth==1.2.3
+internal-data-processor==0.5.0
+private-api-gateway>=2.0.0
+company-microservice-utils==2.1.0
+internal-backend-tools>=1.0.0,<2.0.0
+private-event-bus==1.5.0
+company-service-mesh==3.0.0
+internal-monitoring-lib>=0.8.0
+
+# Editable installations from missing paths
+-e ./missing-backend-workspace/auth-service
+-e ../nonexistent-microservices/data-service
+-e ./workspace/missing-event-processor
