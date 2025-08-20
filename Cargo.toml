@@ -1,0 +1,37 @@
+[package]
+name = "vulnerability-test-project"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+# Dependency confusion vulnerabilities
+internal-company-auth = "0.1.2"
+company-secret-crate = "0.2.0" 
+private-rust-utils = "1.0.0"
+internal-auth-lib = "0.5.0"
+company-data-processor = "1.2.0"
+
+# Path dependencies (missing paths)
+internal-workspace-auth = { path = "./missing-rust-workspace/auth" }
+company-secret-lib = { path = "../nonexistent-rust-packages/secret" }
+missing-local-crate = { path = "./workspace/missing-crate" }
+gone-rust-utils = { path = "../gone-rust-libs/utils" }
+
+# Workspace dependencies (missing in workspace)
+internal-workspace-missing = { workspace = true }
+company-workspace-gone = { workspace = true }
+private-workspace-nonexistent = { workspace = true }
+
+[workspace]
+members = [
+    "./missing-workspace-member/auth",
+    "../nonexistent-workspace/utils", 
+    "./workspace/missing-rust-package",
+    "../gone-workspace/secret-lib"
+]
+
+[workspace.dependencies]
+# These should exist in workspace but don't
+internal-workspace-auth = "0.1.0"
+company-workspace-utils = "1.0.0"
+private-workspace-lib = "0.5.0"
