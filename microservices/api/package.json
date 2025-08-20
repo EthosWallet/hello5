@@ -1,0 +1,14 @@
+{
+  "name": "microservice-api-test",
+  "version": "1.0.0",
+  "dependencies": {
+    "internal-api-auth": "^1.0.0",
+    "company-microservice-framework": "^2.0.0",
+    "private-api-gateway-client": "latest",
+    "internal-service-discovery": "~1.2.0"
+  },
+  "workspaces": [
+    "./missing-api-workspace/middleware",
+    "../nonexistent-api-packages/auth"
+  ]
+}
