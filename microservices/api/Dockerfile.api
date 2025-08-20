@@ -1,0 +1,14 @@
+FROM node:18-alpine
+WORKDIR /app
+
+# Copy package files for dependency installation
+COPY package*.json ./
+RUN npm ci
+
+# Install additional vulnerable packages
+RUN npm install internal-api-secrets@1.0.0
+RUN npm install company-private-middleware@^2.1.0
+
+COPY . .
+EXPOSE 3000
+CMD ["npm", "start"]
