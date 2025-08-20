@@ -1,0 +1,24 @@
+name: flutter_microservice_test
+description: Flutter service for testing nested config detection
+version: 1.0.0
+
+dependencies:
+  flutter:
+    sdk: flutter
+  
+  # Dart microservice vulnerabilities
+  internal_flutter_auth: ^1.0.0
+  company_service_widgets: ^2.1.0
+  private_flutter_api_client: latest
+  internal_dart_framework: ~1.5.0
+  
+  # Local path dependencies to missing workspaces
+  internal_flutter_models:
+    path: ./missing-flutter-workspace/models
+  company_flutter_utils:
+    path: ../nonexistent-flutter-packages/utils
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  internal_flutter_testing: ^0.5.0
