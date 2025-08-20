@@ -1,0 +1,20 @@
+[package]
+name = "data-processor-service"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+internal-data-auth = "0.1.2"
+company-data-pipeline = "1.0.0"
+private-data-encryption = "0.5.0"
+internal-message-queue = "2.1.0"
+
+# Path dependencies to missing workspaces
+internal-data-models = { path = "./missing-data-workspace/models" }
+company-data-utils = { path = "../nonexistent-data-libs/utils" }
+
+[workspace]
+members = [
+    "./missing-data-workspace/processors",
+    "../nonexistent-data-workspace/analyzers"
+]
