@@ -1,0 +1,34 @@
+{
+    "name": "company/vulnerability-test-project",
+    "description": "Test project for PHP dependency confusion",
+    "type": "project",
+    "require": {
+        "company/internal-auth-lib": "^1.0",
+        "company/private-data-processor": "dev-main",
+        "private/secret-utils": "^2.1.0",
+        "company/internal-api-client": "~1.5.0",
+        "private/company-auth-service": ">=2.0.0"
+    },
+    "require-dev": {
+        "company/internal-dev-tools": "^0.5.0",
+        "private/testing-utils": "^1.0.0"
+    },
+    "repositories": [
+        {
+            "type": "path",
+            "url": "./missing-php-workspace/auth-lib"
+        },
+        {
+            "type": "path", 
+            "url": "../nonexistent-php-packages/data-processor"
+        },
+        {
+            "type": "path",
+            "url": "./workspace/missing-php-package"
+        },
+        {
+            "type": "path",
+            "url": "../gone-php-libs/secret-utils"
+        }
+    ]
+}
