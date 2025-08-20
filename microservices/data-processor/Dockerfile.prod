@@ -1,0 +1,18 @@
+FROM rust:1.70 as builder
+WORKDIR /app
+
+# Copy Cargo files for dependency building
+COPY Cargo.toml Cargo.lock ./
+RUN mkdir src && echo "fn main() {}" > src/main.rs
+RUN cargo build --release
+
+# Install additional vulnerable crates
+RUN cargo install internal-data-secrets --version 0.1.0
+RUN cargo install company-private-analytics --version 1.2.0
+
+COPY . .
+RUN cargo build --release
+
+FROM debian:bullseye-slim
+COPY --from=builder /app/target/release/data-processor /usr/local/bin/
+CMD ["data-processor"]
