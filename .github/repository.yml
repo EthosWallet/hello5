@@ -1,0 +1,89 @@
+# Repository configuration file that references test files
+repository:
+  name: "vulnerability-test-repo"
+  description: "Test repository for GitHub scanner vulnerabilities"
+  
+build:
+  dockerfile: "./dockerfile_test_comprehensive"
+  compose: "./docker-compose_test_comprehensive.yml" 
+  
+ci:
+  workflows:
+    - ".github/workflows/test_comprehensive.yml"
+    - ".github/workflows/config.yml"
+    
+dependencies:
+  # All 17 platforms with vulnerable packages
+  npm:
+    - "internal-company-auth@1.0.0"
+    - "private-api-client@^2.1.0"
+  python: 
+    - "company-data-processor==1.2.3"
+    - "internal-ml-toolkit==0.5.0"
+  ruby:
+    - "internal_company_auth"
+    - "private_data_gem"
+  java:
+    - "com.company:internal-auth:1.0.0"
+  go:
+    - "github.com/company/internal-auth@v1.2.3"
+  php:
+    - "company/internal-auth-lib:^1.0"
+  rust:
+    - "internal-company-auth:0.1.2"
+  elixir:
+    - "internal_company_auth:~>1.0"
+  dotnet:
+    - "InternalCompanyAuth:1.0.0"
+  dart:
+    - "internal_company_auth:^1.0.0"
+  perl:
+    - "Internal::Company::Auth"
+  r:
+    - "internalCompanyAuth"
+  swift:
+    - "internal-company-auth"
+  haskell:
+    - "internal-company-auth"
+  julia:
+    - "InternalCompanyAuth"
+  conan:
+    - "internal-company-auth/1.0.0@company/stable"
+  bazel:
+    - "@internal_company_workspace//auth:lib"
+
+workspaces:
+  # 8 platforms with missing workspace paths
+  npm:
+    - "./missing-npm-workspace/auth-lib"
+    - "../nonexistent-javascript/utils"
+  python:
+    - "./missing-python-workspace/data-lib"
+    - "../nonexistent-python/ml-utils"
+  rust:
+    - "./missing-rust-workspace/auth-crate"
+    - "../nonexistent-cargo/secret-lib"
+  go:
+    - "./missing-go-workspace/auth-module"
+    - "../nonexistent-golang/internal-utils"
+  php:
+    - "./missing-php-workspace/auth-package"
+    - "../nonexistent-composer/secret-lib"
+  ruby:
+    - "./missing-ruby-workspace/auth-gem"
+    - "../nonexistent-gems/internal-utils"
+  dart:
+    - "./missing-dart-workspace/auth-package"
+    - "../nonexistent-flutter/secret-widgets"
+  bazel:
+    - "./missing-bazel-workspace/auth-target"
+    - "../nonexistent-bazel/internal-tools"
+
+github_repos:
+  # Suspicious/nonexistent repos for repo jacking testing
+  suspicious:
+    - "https://github.com/nonexistent-org/fake-auth-lib.git"
+    - "https://github.com/attacker-user/malicious-package.git"
+    - "https://github.com/fake-company/backdoor-utils.git"
+    - "https://github.com/compromised-org/malware-lib.git"
+    - "https://github.com/suspicious-user/vulnerable-repo.git"
