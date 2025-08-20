@@ -1,0 +1,38 @@
+name: vulnerability_test_project
+description: Test project for Dart dependency confusion
+version: 1.0.0
+
+environment:
+  sdk: '>=2.17.0 <4.0.0'
+  flutter: ">=3.0.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+  
+  # Dependency confusion vulnerabilities
+  internal_company_auth: ^1.0.0
+  company_secret_widgets: latest
+  private_flutter_utils: ^2.1.0
+  internal_dart_package: ~1.5.0
+  company_api_client: ">=1.0.0 <2.0.0"
+  private_auth_service: ^3.0.0
+  
+  # Local path dependencies (missing paths)
+  internal_workspace_widgets:
+    path: ./missing-flutter-workspace/widgets
+  company_local_utils:
+    path: ../nonexistent-flutter-packages/utils
+  missing_dart_package:
+    path: ./workspace/missing-dart-lib
+  gone_flutter_widgets:
+    path: ../gone-flutter-libs/widgets
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  internal_dev_tools: ^0.5.0
+  company_testing_widgets: ^1.0.0
+
+flutter:
+  uses-material-design: true
