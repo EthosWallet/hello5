@@ -1,0 +1,34 @@
+# Override file that references the main test compose file
+version: '3.8'
+
+services:
+  # Override referencing the test compose file
+  test-override:
+    extends:
+      file: docker-compose_test_comprehensive.yml
+      service: frontend
+    environment:
+      # Additional dependency confusion vulnerabilities
+      - ADDITIONAL_NPM=company-internal-override@1.0.0
+      - ADDITIONAL_PYTHON=internal-override-lib==1.2.3
+      - ADDITIONAL_RUST=company-override-crate:0.1.0
+    volumes:
+      # Additional missing workspace paths
+      - ./missing-override-workspace:/app/override
+      - ../nonexistent-override:/app/gone-override
+
+  # Service with complex workspace references
+  complex-workspace:
+    build:
+      context: ./dockerfile_test_comprehensive
+      dockerfile: Dockerfile
+    volumes:
+      # Reference all 8 workspace platforms with missing paths
+      - ./missing-npm-complex:/app/npm-complex
+      - ./missing-python-complex:/app/python-complex  
+      - ./missing-rust-complex:/app/rust-complex
+      - ./missing-go-complex:/app/go-complex
+      - ./missing-php-complex:/app/php-complex
+      - ./missing-ruby-complex:/app/ruby-complex
+      - ./missing-dart-complex:/app/dart-complex
+      - ./missing-bazel-complex:/app/bazel-complex
