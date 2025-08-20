@@ -1,0 +1,10 @@
+# Auth service specific vulnerabilities
+company-auth-framework==1.2.3
+internal-identity-provider==0.8.0
+private-jwt-utils>=1.5.0
+company-oauth-client==2.0.0
+internal-auth-middleware>=1.0.0
+
+# Missing workspace references
+-e ./missing-auth-workspace/providers
+-e ../nonexistent-identity-libs/oauth
