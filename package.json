@@ -1,0 +1,28 @@
+{
+  "name": "vulnerability-test-project",
+  "version": "1.0.0",
+  "description": "Test project for dependency confusion vulnerabilities",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "webpack --mode production",
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "internal-company-auth": "^1.0.0",
+    "private-api-client": "^2.1.0",
+    "company-secret-utils": "latest",
+    "internal-frontend-lib": "~2.0.0",
+    "company-private-components": "^1.5.0"
+  },
+  "devDependencies": {
+    "internal-dev-tools": "^0.5.0",
+    "company-build-utils": "^1.2.0"
+  },
+  "workspaces": [
+    "./missing-workspace/auth-lib",
+    "../nonexistent-packages/utils",
+    "./workspace/missing-frontend-components",
+    "../gone-packages/internal-tools"
+  ]
+}
