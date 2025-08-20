@@ -1,0 +1,186 @@
+# Testing file for GitHub repo scanner - Docker Compose vulnerabilities
+version: '3.8'
+
+services:
+  # Service with repo jacking vulnerabilities
+  frontend:
+    build:
+      context: https://github.com/nonexistent-org/fake-frontend.git
+      dockerfile: Dockerfile
+    environment:
+      # Dependency confusion through environment variables
+      - NPM_PACKAGES=internal-company-utils@1.0.0,private-auth-lib@^2.1
+      - PIP_PACKAGES=company-data-processor==1.2.3 internal-ml-toolkit
+      - GEM_LIST=internal_ruby_auth:2.0.1,company_secret_gem
+      - MAVEN_DEPS=com.company:internal-utils:1.0.0,com.private:secret-lib:2.1.0
+      - GO_MODULES=github.com/company/internal-go@v1.2.3,company.com/private/auth
+      - COMPOSER_PACKAGES=company/internal-php-lib:^1.0,private/secret-utils:dev-main
+      - CARGO_CRATES=internal-rust-crate:0.1.2,company-secret-rust:0.2.0
+      - HEX_PACKAGES=internal_elixir_package:~>1.0,company_secret_mix:==2.1.0
+      - NUGET_PACKAGES=InternalCompanyUtils:1.0.0,PrivateDataLib:2.1.0
+      - DART_PACKAGES=internal_dart_package:^1.0.0,company_flutter_widgets:latest
+      - PERL_MODULES=Internal::Company::Module,Company::Secret::Utils
+      - R_PACKAGES=internalRPackage,companySecretR
+      - SWIFT_PACKAGES=internal-swift-package,company-secret-swift
+      - HASKELL_LIBS=internal-haskell-lib,company-secret-haskell
+      - JULIA_PACKAGES=InternalJuliaPackage,CompanySecretJulia
+      - CONAN_LIBS=internal-cpp-lib/1.0.0@company/stable
+      - BAZEL_TARGETS=@internal_workspace//package:target
+    volumes:
+      # Workspace path vulnerabilities
+      - ./missing-workspace:/app/workspace
+      - ../nonexistent-packages:/app/packages
+      - ../../private-libs:/app/private
+
+  # Service with build context vulnerabilities (TESTING BUILD CONTEXT DETECTION)
+  backend:
+    build:
+      context: ./backend-services
+      dockerfile: Dockerfile
+    environment:
+      - GITHUB_REPO_CLONE=https://github.com/fake-org/malicious-backend.git
+      - SUBMODULE_URL=https://github.com/attacker/backdoor-module.git
+    command: |
+      sh -c "
+        git clone https://github.com/suspicious-user/vulnerable-repo.git /tmp/vuln &&
+        npm install file:../../missing-npm-workspace &&
+        pip install -e ../nonexistent-python-package &&
+        cargo install --path ./missing-rust-crate &&
+        go mod edit -require=../internal-modules/missing@v0.0.0 &&
+        composer require company/missing-lib --repository='{\"type\":\"path\",\"url\":\"../missing-php\"}' &&
+        bundle add missing_gem --path ../ruby-workspace/nonexistent &&
+        dart pub add missing_dart --path=../flutter-workspace/gone &&
+        bazel build //workspace/missing:all
+      "
+
+  # Service with multiple build contexts (nested config file testing)
+  frontend:
+    build:
+      context: ./frontend-workspace
+      dockerfile: Dockerfile
+    environment:
+      # Dependency confusion through environment variables
+      - NPM_PACKAGES=internal-company-utils@1.0.0,private-auth-lib@^2.1
+      - PIP_PACKAGES=company-data-processor==1.2.3 internal-ml-toolkit
+      - GEM_LIST=internal_ruby_auth:2.0.1,company_secret_gem
+      - MAVEN_DEPS=com.company:internal-utils:1.0.0,com.private:secret-lib:2.1.0
+      - GO_MODULES=github.com/company/internal-go@v1.2.3,company.com/private/auth
+      - COMPOSER_PACKAGES=company/internal-php-lib:^1.0,private/secret-utils:dev-main
+      - CARGO_CRATES=internal-rust-crate:0.1.2,company-secret-rust:0.2.0
+      - HEX_PACKAGES=internal_elixir_package:~>1.0,company_secret_mix:==2.1.0
+      - NUGET_PACKAGES=InternalCompanyUtils:1.0.0,PrivateDataLib:2.1.0
+      - DART_PACKAGES=internal_dart_package:^1.0.0,company_flutter_widgets:latest
+      - PERL_MODULES=Internal::Company::Module,Company::Secret::Utils
+      - R_PACKAGES=internalRPackage,companySecretR
+      - SWIFT_PACKAGES=internal-swift-package,company-secret-swift
+      - HASKELL_LIBS=internal-haskell-lib,company-secret-haskell
+      - JULIA_PACKAGES=InternalJuliaPackage,CompanySecretJulia
+      - CONAN_LIBS=internal-cpp-lib/1.0.0@company/stable
+      - BAZEL_TARGETS=@internal_workspace//package:target
+    volumes:
+      # Workspace path vulnerabilities
+      - ./missing-workspace:/app/workspace
+      - ../nonexistent-packages:/app/packages
+      - ../../private-libs:/app/private
+
+  # Additional build context services for testing
+  microservice-api:
+    build:
+      context: ./microservices/api
+      dockerfile: Dockerfile.api
+    
+  microservice-auth:
+    build:
+      context: ./microservices/auth-service
+      dockerfile: Dockerfile
+      
+  microservice-data:
+    build:
+      context: ./microservices/data-processor
+      dockerfile: Dockerfile.prod
+
+  # Service with volume mount vulnerabilities
+  database:
+    image: postgres:13
+    environment:
+      - POSTGRES_DB=testdb
+      - POSTGRES_USER=testuser  
+      - POSTGRES_PASSWORD=testpass
+    volumes:
+      # Mounting nonexistent workspace paths
+      - ./missing-data-workspace:/var/lib/postgresql/data
+      - ../nonexistent-config:/etc/postgresql
+      - /workspace/gone-forever:/backup
+
+  # Service cloning suspicious repos
+  tools:
+    image: alpine:latest
+    command: |
+      sh -c "
+        apk add --no-cache git &&
+        git clone https://github.com/fake-attacker/malicious-tools.git /tools &&
+        git clone https://github.com/nonexistent-org/backdoor-utils.git /utils &&
+        git submodule add https://github.com/suspicious/compromised-lib.git libs/compromised
+      "
+    volumes:
+      - ./missing-tools-workspace:/workspace
+      - ../gone-tools:/tools
+
+  # Testing workspace implementations for all 8 platforms
+  workspace-test:
+    build:
+      context: .
+      dockerfile: Dockerfile.workspace
+    volumes:
+      # NPM workspace paths (missing)
+      - ./npm-workspace/missing-package:/app/npm/missing
+      - ../javascript-libs/nonexistent:/app/js/gone
+      
+      # Python workspace paths (missing)
+      - ./python-workspace/missing-lib:/app/python/missing
+      - ../py-packages/nonexistent:/app/py/gone
+      
+      # Rust workspace paths (missing)  
+      - ./rust-workspace/missing-crate:/app/rust/missing
+      - ../cargo-workspace/nonexistent:/app/cargo/gone
+      
+      # Go workspace paths (missing)
+      - ./go-workspace/missing-module:/app/go/missing
+      - ../golang-libs/nonexistent:/app/golang/gone
+      
+      # PHP workspace paths (missing)
+      - ./php-workspace/missing-package:/app/php/missing
+      - ../composer-libs/nonexistent:/app/composer/gone
+      
+      # Ruby workspace paths (missing)
+      - ./ruby-workspace/missing-gem:/app/ruby/missing  
+      - ../gems-workspace/nonexistent:/app/gems/gone
+      
+      # Dart workspace paths (missing)
+      - ./dart-workspace/missing-package:/app/dart/missing
+      - ../flutter-libs/nonexistent:/app/flutter/gone
+      
+      # Bazel workspace paths (missing)
+      - ./bazel-workspace/missing-target:/app/bazel/missing
+      - ../bazel-libs/nonexistent:/app/bazel/gone
+
+# Networks with potential issues
+networks:
+  internal:
+    driver: bridge
+    
+# Volumes referencing missing workspace paths
+volumes:
+  npm-workspace:
+    driver: local
+    driver_opts:
+      type: none
+      device: ./missing-npm-workspace
+      o: bind
+      
+  python-workspace:
+    driver: local  
+    driver_opts:
+      type: none
+      device: ../nonexistent-python-workspace
+      o: bind
