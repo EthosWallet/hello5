@@ -1,0 +1,36 @@
+# Configuration file referencing the test files
+name: Scanner Test Configuration
+
+on:
+  workflow_call:
+    inputs:
+      dockerfile:
+        description: 'Dockerfile to test'
+        required: true
+        type: string
+        default: 'dockerfile_test_comprehensive'
+      compose_file:
+        description: 'Docker compose file to test'  
+        required: true
+        type: string
+        default: 'docker-compose_test_comprehensive.yml'
+      workflow_file:
+        description: 'Workflow file to test'
+        required: true
+        type: string
+        default: '.github/workflows/test_comprehensive.yml'
+
+jobs:
+  test-scanner:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v3
+    
+    - name: Run scanner on test files
+      run: |
+        echo "Testing Dockerfile: ${{ inputs.dockerfile }}"
+        echo "Testing Docker Compose: ${{ inputs.compose_file }}"
+        echo "Testing Workflow: ${{ inputs.workflow_file }}"
+        
+        # The scanner should detect vulnerabilities in these files
+        python github_public_repo_scanner.py ./test-files/
