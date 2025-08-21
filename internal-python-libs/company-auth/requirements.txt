@@ -1,0 +1,13 @@
+
+# Python dependency confusion vulnerabilities
+company-data-processor1234567890==1.2.3
+
+# Editable/workspace installations (missing paths)
+-e ./missing-python-workspace/auth-lib
+-e ../nonexistent-python-packages/data-processor
+-e ./workspace/missing-ml-utils
+-e ../gone-python-libs/secret-package
+-e file:./missing-local-package
+-e file:../nonexistent-local-lib
+-e git+https://github.com/nonexistent-org/fake-python-lib.git
+-e git+https://github.com/attacker-user/malicious-python-package.git
