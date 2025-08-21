@@ -1,0 +1,10 @@
+[package]
+name = "vulnerability-test-project"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+# Dependency confusion vulnerabilities
+internal-company-auth1111111111111111 = "0.1.2"
+company-secret-crate22222222222222222222 = "0.2.0" 
+private-rust-utils3333333333333333333 = "1.0.0"
