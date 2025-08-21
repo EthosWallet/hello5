@@ -1,0 +1,8 @@
+[package]
+name = "vulnerability-test-project"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+# Dependency confusion vulnerabilities
+internal-company-auth9999999 = "0.1.2"
